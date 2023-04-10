@@ -1,11 +1,11 @@
-﻿namespace FirstApi.Models
+﻿namespace FirstApi.Dtos.ProductDto
 {
-    public class Product:BaseEntity
+    public class ProductUpdateDto
     {
+
         public string Name { get; set; }
         public double SalePrice { get; set; }
         public double CostPrice { get; set; }
         public bool IsActive { get; set; }
-        public bool IsDelete { get; set; }
     }
 }
