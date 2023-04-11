@@ -65,3 +65,4 @@ C:\Users\lenovo\Desktop\API\FirstApi\FirstApi\bin\Debug\net6.0\runtimes\win\lib\
 C:\Users\lenovo\Desktop\API\FirstApi\FirstApi\bin\Debug\net6.0\FluentValidation.dll
 C:\Users\lenovo\Desktop\API\FirstApi\FirstApi\bin\Debug\net6.0\FluentValidation.AspNetCore.dll
 C:\Users\lenovo\Desktop\API\FirstApi\FirstApi\bin\Debug\net6.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\lenovo\Desktop\API\FirstApi\FirstApi\bin\Debug\net6.0\FirstApi.staticwebassets.runtime.json

@@ -1,11 +1,54 @@
 {
   "Version": 1,
-  "Hash": "AMRTpv8bgR+APfTQS9xwTmafVXYRirl7wkPbLj50OgI=",
+  "Hash": "/9EIRPKHlnPPtISNsrjxnoUek9lbRDJPXR0IpsObOp4=",
   "Source": "FirstApi",
   "BasePath": "_content/FirstApi",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "FirstApi\\wwwroot",
+      "Source": "FirstApi",
+      "ContentRoot": "C:\\Users\\lenovo\\Desktop\\API\\FirstApi\\FirstApi\\wwwroot\\",
+      "BasePath": "_content/FirstApi",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\lenovo\\Desktop\\API\\FirstApi\\FirstApi\\wwwroot\\img\\918fe6ee-d78a-4716-87e2-559ebb54fd01blog-feature-img-1.jpg",
+      "SourceId": "FirstApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\lenovo\\Desktop\\API\\FirstApi\\FirstApi\\wwwroot\\",
+      "BasePath": "_content/FirstApi",
+      "RelativePath": "img/918fe6ee-d78a-4716-87e2-559ebb54fd01blog-feature-img-1.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\918fe6ee-d78a-4716-87e2-559ebb54fd01blog-feature-img-1.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\lenovo\\Desktop\\API\\FirstApi\\FirstApi\\wwwroot\\img\\streetstyle.jpg",
+      "SourceId": "FirstApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\lenovo\\Desktop\\API\\FirstApi\\FirstApi\\wwwroot\\",
+      "BasePath": "_content/FirstApi",
+      "RelativePath": "img/streetstyle.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\streetstyle.jpg"
+    }
+  ]
 }

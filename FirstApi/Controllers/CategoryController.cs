@@ -1,9 +1,11 @@
 ﻿using FirstApi.Data.DAL;
 using FirstApi.Dtos.CategoryDto;
 using FirstApi.Dtos.ProductDto;
+using FirstApi.Extention;
 using FirstApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace FirstApi.Controllers
 {
@@ -12,10 +14,12 @@ namespace FirstApi.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment _env;
 
-        public CategoryController(AppDbContext context)
+        public CategoryController(AppDbContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
         [HttpGet]
@@ -41,7 +45,8 @@ namespace FirstApi.Controllers
                     Name = p.Name,
                      Description= p.Description,
                     CreateDate = p.CreateDate,
-                    UpdateDate = p.UpdateDate
+                    UpdateDate = p.UpdateDate,
+                    ImageUrl= "https://localhost:7076/img/"+p.ImageUrl
                 }).ToList();
 
             List<CategoryListItemDto> categoryListItemDtos = new();
@@ -63,19 +68,30 @@ namespace FirstApi.Controllers
                 Name = category.Name,
                 Description = category.Description,
                 CreateDate = category.CreateDate,
-                UpdateDate = category.UpdateDate
+                UpdateDate = category.UpdateDate,
+                ImageUrl= "https://localhost:7076/img/"+category.ImageUrl
             };
 
             return Ok(categoryReturnDto);
         }
 
         [HttpPost]
-        public IActionResult AddCategory(CategoryCreateDto categoryCreateDto)
+        public IActionResult AddCategory([FromForm]CategoryCreateDto categoryCreateDto)
         {
+
+            if (categoryCreateDto.Photo==null) return StatusCode(409);
+            if (!categoryCreateDto.Photo.IsImage()) return BadRequest("photo type deyil");
+            if (!categoryCreateDto.Photo.CheckSize(50)) return BadRequest("olcu boyukdur");
+
+
+
+
+
             Category newcategory = new()
             {
                 Name = categoryCreateDto.Name,
                 Description = categoryCreateDto.Description,
+                ImageUrl = categoryCreateDto.Photo.SaveImage(_env,"img",categoryCreateDto.Photo.FileName)
                 
             };
             _context.Categories.Add(newcategory);
@@ -97,6 +113,11 @@ namespace FirstApi.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateProduct(int id, CategoryUpdateDto categoryUpdateDto)
         {
+            bool isExist = _context.Categories.Any(c => c.Name.ToLower() == categoryUpdateDto.Name.ToLower() && c.Id != id);
+            if (isExist)
+            {
+                return BadRequest("bu adli categori movcuddur");
+            }
             var existCategory = _context.Categories.FirstOrDefault(c => c.Id == id);
             if (existCategory == null) return NotFound();
             existCategory.Name = categoryUpdateDto.Name;
