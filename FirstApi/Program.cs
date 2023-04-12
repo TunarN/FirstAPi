@@ -1,5 +1,6 @@
 using FirstApi.Data.DAL;
 using FirstApi.Dtos.ProductDto;
+using FirstApi.Profiles;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+builder.Services.AddAutoMapper(opt =>
+{
+    opt.AddProfile(new MapperProfile());
+});
 
 app.UseStaticFiles();
 

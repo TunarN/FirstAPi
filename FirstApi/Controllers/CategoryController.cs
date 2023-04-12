@@ -1,10 +1,12 @@
-﻿using FirstApi.Data.DAL;
+﻿using AutoMapper;
+using FirstApi.Data.DAL;
 using FirstApi.Dtos.CategoryDto;
 using FirstApi.Dtos.ProductDto;
 using FirstApi.Extention;
 using FirstApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace FirstApi.Controllers
@@ -15,11 +17,13 @@ namespace FirstApi.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _env;
+        private readonly IMapper _mapper;
 
-        public CategoryController(AppDbContext context, IWebHostEnvironment env)
+        public CategoryController(AppDbContext context, IWebHostEnvironment env, IMapper mapper)
         {
             _context = context;
             _env = env;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -43,10 +47,10 @@ namespace FirstApi.Controllers
                 .Select(p => new CategoryListItemDto
                 {
                     Name = p.Name,
-                     Description= p.Description,
+                    Description = p.Description,
                     CreateDate = p.CreateDate,
                     UpdateDate = p.UpdateDate,
-                    ImageUrl= "https://localhost:7076/img/"+p.ImageUrl
+                    ImageUrl = "https://localhost:7076/img/" + p.ImageUrl
                 }).ToList();
 
             List<CategoryListItemDto> categoryListItemDtos = new();
@@ -60,26 +64,30 @@ namespace FirstApi.Controllers
         public IActionResult GetOne(int id)
         {
             Category category = _context.Categories
+                .Include(c=>c.Products)
                 .Where(p => !p.IsDelete)
                 .FirstOrDefault(x => x.Id == id);
             if (category == null) return StatusCode(StatusCodes.Status404NotFound);
-            CategoryReturnDto categoryReturnDto = new()
-            {
-                Name = category.Name,
-                Description = category.Description,
-                CreateDate = category.CreateDate,
-                UpdateDate = category.UpdateDate,
-                ImageUrl= "https://localhost:7076/img/"+category.ImageUrl
-            };
+
+            CategoryReturnDto categoryReturnDto = _mapper.Map<CategoryReturnDto>(category);
+
+            //CategoryReturnDto categoryReturnDto = new()
+            //{
+            //    Name = category.Name,
+            //    Description = category.Description,
+            //    CreateDate = category.CreateDate,
+            //    UpdateDate = category.UpdateDate,
+            //    ImageUrl = "https://localhost:7076/img/" + category.ImageUrl
+            //};
 
             return Ok(categoryReturnDto);
         }
 
         [HttpPost]
-        public IActionResult AddCategory([FromForm]CategoryCreateDto categoryCreateDto)
+        public IActionResult AddCategory([FromForm] CategoryCreateDto categoryCreateDto)
         {
 
-            if (categoryCreateDto.Photo==null) return StatusCode(409);
+            if (categoryCreateDto.Photo == null) return StatusCode(409);
             if (!categoryCreateDto.Photo.IsImage()) return BadRequest("photo type deyil");
             if (!categoryCreateDto.Photo.CheckSize(50)) return BadRequest("olcu boyukdur");
 
@@ -91,8 +99,8 @@ namespace FirstApi.Controllers
             {
                 Name = categoryCreateDto.Name,
                 Description = categoryCreateDto.Description,
-                ImageUrl = categoryCreateDto.Photo.SaveImage(_env,"img",categoryCreateDto.Photo.FileName)
-                
+                ImageUrl = categoryCreateDto.Photo.SaveImage(_env, "img", categoryCreateDto.Photo.FileName)
+
             };
             _context.Categories.Add(newcategory);
             _context.SaveChanges();
@@ -101,7 +109,7 @@ namespace FirstApi.Controllers
 
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteProduct(int id)
+        public IActionResult DeleteCategory(int id)
         {
             var category = _context.Categories.FirstOrDefault(c => c.Id == id);
             if (category == null) return NotFound();
@@ -111,7 +119,7 @@ namespace FirstApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateProduct(int id, CategoryUpdateDto categoryUpdateDto)
+        public IActionResult UpdateCategory(int id, CategoryUpdateDto categoryUpdateDto)
         {
             bool isExist = _context.Categories.Any(c => c.Name.ToLower() == categoryUpdateDto.Name.ToLower() && c.Id != id);
             if (isExist)

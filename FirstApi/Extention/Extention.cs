@@ -22,5 +22,10 @@
             }
             return fileName;
         }
+
+        public static int CalculateTime(this DateTime time)
+        {
+            return DateTime.Now.Day - time.Day;
+        }
     }
 }

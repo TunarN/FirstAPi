@@ -4,7 +4,7 @@ namespace FirstApi.Dtos.ProductDto
 {
     public class ProductCreateDto
     {
-
+        public int CategoryId { get; set; }
         public string Name { get; set; }
         public double SalePrice { get; set; }
         public double CostPrice { get; set; }
@@ -15,6 +15,8 @@ namespace FirstApi.Dtos.ProductDto
     {
         public ProductCreateDtoValidator()
         {
+            RuleFor(x => x.CategoryId).NotNull().GreaterThan(1).WithMessage("Bos qoyula bilmez");
+
             RuleFor(p => p.Name)
                 .MaximumLength(50).WithMessage("50 den boyuk ola bilmez")
                 .NotNull().WithMessage("Bos qoyula bilmez");

@@ -10,5 +10,15 @@
 
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; }
+
+        public double Profit { get; set; }
+
+        public CategoryInProductReturnDto Category { get; set; }
+    }
+
+    public class CategoryInProductReturnDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }
