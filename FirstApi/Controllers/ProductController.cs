@@ -2,6 +2,7 @@
 using FirstApi.Data.DAL;
 using FirstApi.Dtos.ProductDto;
 using FirstApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace FirstApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetAll(int page, string search)
         {
             var query = _context.Products
